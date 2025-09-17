@@ -3,17 +3,18 @@ import { ContactContext } from "../ContactContext";
 import { Link } from "react-router";
 import { addContact } from "../services/contact.service.js"
 
-export default function AddNewContact (){
+export default function AddNewContact (props){
     const {contact, dispatch} = useContext(ContactContext);
-    const [name, setName] = useState("");
+    const [name, setName] = useState(contact.contactInfo[0]===undefined ? "" : contact.contactInfo[0]);
+    const [email, setEmail] = useState(contact.contactInfo[1]===undefined ? "" : contact.contactInfo[1]);
+    const [phone, setPhone] = useState(contact.contactInfo[2]===undefined ? "" : contact.contactInfo[2]);
+    const [address, setAddress] = useState(contact.contactInfo[3]===undefined ? "" : contact.contactInfo[3]);
     const user = contact.user;
     let newContact = {name:"", phone:"", email:"", address:""};
     let counter = 0;
 
     console.log("ahora viene el contact.info")
-    console.log(newContact.name)
-    if(contact.info[0]!==undefined)
-        newContact = {name:contact.info[0], phone:contact.info[1], email:contact.info[2], address:contact.info[3]}
+    console.log(name)
 
     if(contact.user[0]===undefined){
         return(
@@ -32,9 +33,9 @@ export default function AddNewContact (){
     const handleKeyDown = (e)=>{
             if(e.target.id==="name"){
                 newContact.name=e.target.value;
-                setName(e.target.value)
                 if(e.key==="Enter")
                 document.getElementById("email").focus();
+
             }
             else if(e.target.id==="email"){
                 newContact.email=e.target.value;
@@ -54,6 +55,7 @@ export default function AddNewContact (){
     }
 
     const handleAddContact = async ()=>{
+        newContact = {name:name, email:email, phone:phone, address:address}
         await addContact(user, newContact)
     }
 
@@ -65,13 +67,13 @@ export default function AddNewContact (){
                 <div className="card col-sm-8 mt-5 p-4">
                     <h1 className="my-3 text-center">{user}</h1>
                     <label className="mt-1">Full Name</label>
-                    <input className="col-sm-12 my-2" id="name"  placeholder="Full Name" onChange={handleKeyDown} value={name}/>
+                    <input className="col-sm-12 my-2" id="name"  placeholder="Full Name" onKeyDown={handleKeyDown} onChange={(e)=>setName(e.target.value)} value={name}/>
                     <label className="mt-1">Email</label>
-                    <input className="col-sm-12 my-2" id="email" placeholder="Enter email" onKeyDown={handleKeyDown}/>
+                    <input className="col-sm-12 my-2" id="email" placeholder="Enter email" onKeyDown={handleKeyDown} onChange={(e)=>setEmail(e.target.value)} value={email}/>
                     <label className="mt-1">Phone</label>
-                    <input className="col-sm-12 my-2" id="phone" placeholder="Enter phone" onKeyDown={handleKeyDown}/>
+                    <input className="col-sm-12 my-2" id="phone" placeholder="Enter phone" onKeyDown={handleKeyDown} onChange={(e)=>setPhone(e.target.value)} value={phone}/>
                     <label className="mt-1">Address</label>
-                    <input className="col-sm-12 my-2" id="address" placeholder="Enter address" onKeyDown={handleKeyDown}/>
+                    <input className="col-sm-12 my-2" id="address" placeholder="Enter address" onKeyDown={handleKeyDown} onChange={(e)=>setAddress(e.target.value)} value={address}/>
                     <Link to="/" className="btn btn-primary mt-2" id="saveButton" onClick={handleAddContact} >Save</Link>
                     <Link to="/">get back to contacts</Link>
                 </div>
