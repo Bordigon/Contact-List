@@ -66,6 +66,12 @@ export default function Agenda() {
         updateContactList();
     }
 
+    const handleChangeUser = ()=>{
+        dispatch({ type:"user", payload:undefined});
+        setUser(undefined)
+        setContactList([])
+    }
+
     const inicio = () => {
         if (user === undefined) {
             return (
@@ -99,6 +105,7 @@ export default function Agenda() {
 
     return (
         <div>
+            <button className="btn btn-success float-start m-2" onClick={handleChangeUser}>Change user</button>
             <Link to={url} className="btn btn-primary float-end m-2">Add new contact</Link>
             <div className="d-flex flex-column justify-conten-center align-items-center col-sm-12">
                 {inicio()}
