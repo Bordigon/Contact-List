@@ -12,7 +12,7 @@ export default function Agenda() {
         if (contact.user[0] === undefined)
             return (undefined)
         else
-            return contact.user
+            return contact.user[0]
     }
 
     const [user, setUser] = useState(conditionalUser)
@@ -34,13 +34,11 @@ export default function Agenda() {
     const updateUser = async () => {
         const list = await getAgendas();
         let existe = "false"
-        console.log(list)
+        console.log(user + "console.log del user")
         for (let t = 0; t < list.length; t++) {
             if (list[t].slug === user) {
-                existe = "true";
-                console.log(existe)
+                existe = "true"
             }
-            console.log("entra")
         }
         if (existe === "false") {
             await addAgenda(user);
