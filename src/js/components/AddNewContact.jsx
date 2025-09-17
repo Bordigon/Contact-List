@@ -1,20 +1,20 @@
 import React, { useContext, useState } from "react";
 import { ContactContext } from "../ContactContext";
 import { Link } from "react-router";
-import { addContact } from "../services/contact.service.js"
+import { addContact, deleteContact } from "../services/contact.service.js"
 
 export default function AddNewContact (props){
     const {contact, dispatch} = useContext(ContactContext);
-    const [name, setName] = useState(contact.contactInfo[0]===undefined ? "" : contact.contactInfo[0]);
-    const [email, setEmail] = useState(contact.contactInfo[1]===undefined ? "" : contact.contactInfo[1]);
-    const [phone, setPhone] = useState(contact.contactInfo[2]===undefined ? "" : contact.contactInfo[2]);
-    const [address, setAddress] = useState(contact.contactInfo[3]===undefined ? "" : contact.contactInfo[3]);
+    const [name, setName] = useState(contact.info[0]===undefined ? "" : contact.info[0]);
+    const [email, setEmail] = useState(contact.info[1]===undefined ? "" : contact.info[1]);
+    const [phone, setPhone] = useState(contact.info[2]===undefined ? "" : contact.info[2]);
+    const [address, setAddress] = useState(contact.info[3]===undefined ? "" : contact.info[3]);
     const user = contact.user;
     let newContact = {name:"", phone:"", email:"", address:""};
     let counter = 0;
 
     console.log("ahora viene el contact.info")
-    console.log(name)
+    console.log(contact.info[4]!==undefined)
 
     if(contact.user[0]===undefined){
         return(
@@ -55,8 +55,11 @@ export default function AddNewContact (props){
     }
 
     const handleAddContact = async ()=>{
+        if(contact.info[4]!==undefined)
+            await deleteContact(user, contact.info[4])
         newContact = {name:name, email:email, phone:phone, address:address}
         await addContact(user, newContact)
+        dispatch({ type:"clearInfo", payload:""})
     }
 
     console.log(counter+ " yo soy counter")
@@ -75,7 +78,7 @@ export default function AddNewContact (props){
                     <label className="mt-1">Address</label>
                     <input className="col-sm-12 my-2" id="address" placeholder="Enter address" onKeyDown={handleKeyDown} onChange={(e)=>setAddress(e.target.value)} value={address}/>
                     <Link to="/" className="btn btn-primary mt-2" id="saveButton" onClick={handleAddContact} >Save</Link>
-                    <Link to="/">get back to contacts</Link>
+                    <Link to="/" onClick={(e)=>dispatch({ type:"clearInfo", payload:""})}>get back to contacts</Link>
                 </div>
             </div>
         </div>

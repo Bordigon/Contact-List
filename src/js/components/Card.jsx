@@ -10,6 +10,7 @@ export default function Card (props){
         dispatch({ type:"editInfo", payload:`${props.email}` });
         dispatch({ type:"editInfo", payload:`${props.phone}` });
         dispatch({ type:"editInfo", payload:`${props.address}` });
+        dispatch({ type:"editInfo", payload:`${props.id}` });
 
     }
 

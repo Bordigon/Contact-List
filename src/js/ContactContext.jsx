@@ -3,8 +3,7 @@ import { useReducer, createContext } from "react";
 
 export const inicial = ()=>({
     user: [],
-    info: [],
-    contactInfo: []
+    info: []
 });
 
 export function contactReducer (state, action){
@@ -15,7 +14,9 @@ export function contactReducer (state, action){
         case "user":
             return {...state, user:[action.payload]}
         case "editInfo":
-            return {...state, contactInfo:[...state.contactInfo, action.payload]}
+            return {...state, info:[...state.info, action.payload]}
+        case "clearInfo":
+            return {...state, info:[]}
         default:
             return state;
     }

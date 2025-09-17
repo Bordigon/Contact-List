@@ -62,7 +62,7 @@ export default function Agenda() {
 
     const handleDeleteContact = async ()=>{
         await deleteContact(user, contact.info[0]);
-        dispatch ( {type:"info", payload:""});
+        dispatch ( {type:"clearInfo", payload:""});
         updateContactList();
     }
 
